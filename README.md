@@ -1,11 +1,15 @@
 # medriv
-processing pipeline and statistical analysis code for binocular rivalry in long-term meditators paper
+code for data processing, statistical analysis, and generating figures for the paper on EEG correlates of binocular rivalry in long-term meditators
 
-Katyal, S., & Goldin, P. (2021). The neural correlates of non-judgmental perception induced through meditation. Annals of the New York Academy of Sciences, accepted.
+Katyal, S., & Goldin, P. (2021). Neural correlates of nonjudgmental perception induced through meditation. Annals of the New York Academy of Sciences. https://doi.org/10.1111/nyas.14603
 
+========================================================
+========================================================
 
 directory structure:
 
 'processing' contains matlab code for processing the minimally pre-processed data. the main script is medriv_riv_analysis.m, which calls all the other files in the directory
+
 'stats' contains the R code for doing the analysis and generating the results figures in the paper 
+
 'helper' contains additional .m files called by the matlab code
