@@ -1,5 +1,8 @@
 function medriv_export_connectivity_to_R(exp_medriv, conn_type, ...
     chans_from, chans_to, plot_freq, outfilename, append)
+%
+% export data to a csv file for doing statistical analysis in R
+%
 
 cd(exp_medriv.session_dir)
 
