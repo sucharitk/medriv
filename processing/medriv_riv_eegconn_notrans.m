@@ -1,6 +1,15 @@
 function medriv_riv_eegconn_notrans(exp_medriv, freq_range,...
     remov_artif, conn_type, freq_to_eval)
-
+%
+% for each subject calculate the connectivity during each block 1) after excluding the transitions, 2) for only dominance periods
+% 3) for only mixed periods - for control analysis
+%
+% exp_medriv: data structure containing information about the experimental sessions
+% freq_range: the frequency range over which to calculate the connectivity. for this study, we are focusing on beta and gamma
+% remov_artif: whether to remove the flagged data
+% conn_type: the type of connectivity to calculate. for this experiment, we are using the debiased weighted phase lag index (dwpli), so value is set to 3
+% freq_to_eval: frequency range indices to calculate 
+%
 
 group_n = zeros(1, 3);
 
