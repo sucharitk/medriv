@@ -13,7 +13,6 @@ function medriv_riv_eegconn(exp_medriv, freq_range,...
 group_n = zeros(1, 3);
 
 filename = 'icacomprem_riv_medriv_physio';
-% filename = 'ica_riv_medriv_physio';
 
 cd(exp_medriv.session_dir)
 
@@ -38,11 +37,15 @@ subjblkconn = NaN(nsubj, nblocks, nfreqs, nbchan, nbchan);
 fprintf('\ncalculating connectivity\n')
 
 for ns = 1:nsubj
+% subject loop
     
     subj_data = exp_medriv.data(ns);
     
     if subj_data.subj_valid_riv
+    % subjects for whom there was a valid rivalry task
+    
         if subj_data.group==1 || subj_data.group==2
+        % include the 2 experimental group (leave the pilot group)
             
             cd(fullfile(exp_medriv.session_dir, subj_data.dir_name))
             group_n(subj_data.group) = group_n(subj_data.group)+1;
@@ -55,7 +58,6 @@ for ns = 1:nsubj
                 NFFT = 2^16;
                 freqs = linspace(0, fs/2, NFFT/2+1);
                 chanlocs32 = chanlocs;
-                
                 
                 chanlab32 = {chanlocs.labels};
                 chanlab32 = chanlab32(1:32);
@@ -76,20 +78,25 @@ for ns = 1:nsubj
             chaninds = inds2inds(chaninds);
             numnochans = numel(nochans);
             
+            
             fprintf('run number: ')
             runnum = 0;
             for blknum = 1:nblocks
+            % for each block of the task
+            
                 if isempty(subj_data.riv_runs)
                     epochs_to_an = riv_runs{blknum};
                 else
                     epochs_to_an = subj_data.riv_runs{blknum};
                 end
+                
                 nepochs = numel(epochs_to_an);
                 epochs = filt_data{blknum};
                 artif = artif_data{blknum};
                 conn = NaN(nepochs, nfreqs, nchanan, nchanan);
                 
                 for epnum = 1:nepochs
+                % for each run within a block
                     runnum = runnum + 1;
                     fprintf(' %g', runnum)
                     
@@ -97,6 +104,7 @@ for ns = 1:nsubj
                         
                         if remov_artif
                             if ~isempty(artif{epnum})
+                            % if artifact flagged data is provided
                                 valid_epoch = epochs{epnum}(:, :, artif{epnum});
                             else
                                 valid_epoch = epochs{epnum};
@@ -104,12 +112,14 @@ for ns = 1:nsubj
                         else
                             valid_epoch = epochs{epnum};
                         end
+                        
+                        % add missing channels at the end and then re-arrange so that all participants have the same channel order
                         if numnochans
                             valid_epoch(:, end+1:end+numnochans, :) = NaN;
                         end
                         valid_epoch = valid_epoch(:, chaninds, :);
-                        
 
+                        % calculate connectivity
                         cc = calc_conn(valid_epoch, conn_type, freq_to_eval);
 
                         conn(epnum, :, :, :) = cc;
