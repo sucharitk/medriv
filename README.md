@@ -13,3 +13,9 @@ directory structure:
 'stats' contains the R code for doing the analysis and generating the results figures in the paper 
 
 'helper' contains additional .m files called by the matlab code
+
+=================================================
+=================================================
+
+post-processed data to go along with the R code for statistical analysis and generating figures is available at the OSF page:
+https://osf.io/s8br9/
