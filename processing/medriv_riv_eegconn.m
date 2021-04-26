@@ -1,5 +1,14 @@
 function medriv_riv_eegconn(exp_medriv, freq_range,...
     remov_artif, conn_type, freq_to_eval)
+%
+% for each subject calculate the connectivity during each block
+%
+% exp_medriv: data structure containing information about the experimental sessions
+% freq_range: the frequency range over which to calculate the connectivity. for this study, we are focusing on beta and gamma
+% remov_artif: whether to remove the flagged data
+% conn_type: the type of connectivity to calculate. for this experiment, we are using the debiased weighted phase lag index (dwpli), so value is set to 3
+% freq_to_eval: frequency range indices to calculate 
+%
 
 group_n = zeros(1, 3);
 
@@ -33,7 +42,7 @@ for ns = 1:nsubj
     subj_data = exp_medriv.data(ns);
     
     if subj_data.subj_valid_riv
-        if subj_data.group==1 || subj_data.group==2 % || subj_data.group==2
+        if subj_data.group==1 || subj_data.group==2
             
             cd(fullfile(exp_medriv.session_dir, subj_data.dir_name))
             group_n(subj_data.group) = group_n(subj_data.group)+1;
@@ -131,6 +140,7 @@ save(fullfile(exp_medriv.session_dir,[fname{conn_type} fileapp]), ...
 end
 
 function conn = calc_conn(eegdata, conn_type, freq_to_eval)
+% function to calculate different types of connectivity 
 
 szd = size(eegdata);
 nfreqs = numel(freq_to_eval);
@@ -140,7 +150,6 @@ conn = zeros(nfreqs, nbchan, nbchan);
 for nf = 1:nfreqs
     for nc1 = 1:nbchan
         for nc2 = nc1+1:nbchan
-            % Apply PLV algorith, from Cohen et al., (2008)
             if nc1~=nc2
                 if conn_type<5
                     p1 = angle(squeeze(eegdata(freq_to_eval(nf), nc1, :)));
@@ -173,9 +182,7 @@ for nf = 1:nfreqs
 
                     if ~isnan(eegdata(freq_to_eval(nf), nc1, 1)) &&...
                             ~isnan(eegdata(freq_to_eval(nf), nc1, 1))
-                        %                         cdi = imag(cpsd(squeeze(eegdata(freq_to_eval(nf), nc1, :)),...
-                        %                             squeeze(eegdata(freq_to_eval(nf), nc2, :)),...
-                        %                             hamming(round(size(eegdata,3)/8)),0,40000,250))';
+
                         cdi = imag(cpsd(squeeze(eegdata(freq_to_eval(nf), nc1, :)),...
                             squeeze(eegdata(freq_to_eval(nf), nc2, :))))';
                         imagsum      = sum(cdi,2);
