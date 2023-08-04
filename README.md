@@ -1,7 +1,7 @@
 # medriv
 code for data processing, statistical analysis, and generating figures for the paper on EEG correlates of binocular rivalry in long-term meditators
 
-Katyal, S., & Goldin, P. (2021). Neural correlates of nonjudgmental perception induced through meditation. Annals of the New York Academy of Sciences. https://doi.org/10.1111/nyas.14603
+Katyal, S., & Goldin, P. (2021). Neural correlates of nonjudgmental perception induced through meditation. _Annals of the New York Academy of Sciences_. https://doi.org/10.1111/nyas.14603
 
 =================================================
 =================================================
